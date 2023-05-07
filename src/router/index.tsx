@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux'
-import { MlLayout } from '../components/molecules/ml-layout'
+import { MlLayout } from '../components/organism/or-layout'
 import { LoginPage } from '../pages/login'
 import { sessionSelector } from '../redux/features/sessionSlice'
 import { HomePage } from '../pages/home'
