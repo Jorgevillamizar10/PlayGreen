@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { LimitViewport, ViewportSection } from '../../styles/global-styles'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   Container,
   ContainerInputs,
@@ -14,8 +14,10 @@ import {
 } from './styles'
 import { LoginFormStateProps } from './types'
 import { themeSelector } from '../../redux/features/themeSlice'
+import { setAuth } from '../../redux/features/sessionSlice'
 
 export const LoginPage = () => {
+  const dispatch = useDispatch()
   const { theme } = useSelector(themeSelector)
   const [loginCredentials, setLoginCredentials] = useState<LoginFormStateProps>(
     {
@@ -48,7 +50,14 @@ export const LoginPage = () => {
             <Anchor href='/' theme={theme}>
               Forgot your password?
             </Anchor>
-            <Button>Login</Button>
+            <Button
+              onClick={(ev) => {
+                ev.preventDefault()
+                dispatch(setAuth(true))
+              }}
+            >
+              Login
+            </Button>
           </FormContainer>
         </Container>
       </LimitViewport>

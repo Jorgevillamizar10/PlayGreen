@@ -1,15 +1,17 @@
 import { useSelector } from 'react-redux'
-import { LimitViewport, ViewportSection } from '../../styles/global-styles'
+import { LimitViewport } from '../../styles/global-styles'
 import { themeSelector } from '../../redux/features/themeSlice'
+import { OrBanner } from '../../components/organism/or-banner'
+import { ViewportHomeSection } from '../../components/organism/or-banner/styles'
 
 export const HomePage = () => {
   const { theme } = useSelector(themeSelector)
 
   return (
-    <ViewportSection theme={theme}>
+    <ViewportHomeSection theme={theme}>
       <LimitViewport>
-        <div>HomePage</div>
+        <OrBanner />
       </LimitViewport>
-    </ViewportSection>
+    </ViewportHomeSection>
   )
 }
