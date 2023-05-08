@@ -54,16 +54,16 @@ export const MlFavButtons = ({ name, image, limit }: MlFavButtonsProps) => {
         type: type
       })
     )
-    await addDoc(collection(db, 'sports'), {
-      name: name,
-      image: image,
-      type: type
-    })
     if (sportsKey === limit - 1) {
       dispatch(setSportsKey(0))
     } else {
       dispatch(setSportsKey(sportsKey + 1))
     }
+    await addDoc(collection(db, 'sports'), {
+      name: name,
+      image: image,
+      type: type
+    })
   }
 
   return (
