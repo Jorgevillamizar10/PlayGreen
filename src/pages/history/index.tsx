@@ -98,6 +98,7 @@ export const HistoryPage = () => {
                 ) : (
                   <Description
                     style={{ textAlign: 'center', fontWeight: 'bold' }}
+                    theme={theme}
                   >
                     You don't have sports saved yet :c
                   </Description>
