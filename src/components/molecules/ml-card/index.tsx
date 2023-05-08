@@ -35,7 +35,6 @@ const DeleteIcon = () => (
 )
 
 const getButton = (status: string, theme: string) => {
-  console.log('status', status)
   switch (status) {
     case 'like':
       return <FavIcon theme={theme} />

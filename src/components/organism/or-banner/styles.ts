@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export const ImageContainer = styled.div<{image: string}>`
   width: 100%;
-  height: 65vh;
+  height: 60vh;
   background-image: linear-gradient(360deg, #000000 0%, #000000 2.85%, rgba(0, 0, 0, 0) 100%), url(${(props) => props.image});
   background-repeat: no-repeat;
   background-size: cover;

@@ -1,11 +1,10 @@
 import { useState } from 'react'
 import { LimitViewport, ViewportSection } from '../../styles/global-styles'
-import { useDispatch, useSelector } from 'react-redux'
-import { signInWithEmailAndPassword } from 'firebase/auth'
-import { LoginFormStateProps } from './types'
+import { useSelector } from 'react-redux'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { themeSelector } from '../../redux/features/themeSlice'
-import { setAuth } from '../../redux/features/sessionSlice'
 import { MlLayout } from '../../components/organism/or-layout'
+import { auth } from '../../firebase'
 import {
   Container,
   ContainerInputs,
@@ -13,41 +12,39 @@ import {
   FormContainer,
   Paragraph,
   Title,
-  Anchor,
   Button,
-  Input
-} from './styles'
-import { auth } from '../../firebase'
+  Input,
+  Anchor
+} from '../login/styles'
+import { SignUpStateProps } from './types'
+import { LabelError } from './styles'
 import { useNavigate } from 'react-router-dom'
-import { LabelError } from '../sign-up/styles'
 
-export const LoginPage = () => {
-  const dispatch = useDispatch()
+export const SignUpPage = () => {
+  const { theme } = useSelector(themeSelector)
   const navigate = useNavigate()
   const [error, setError] = useState<{ message: string | undefined }>({
     message: undefined
   })
-  const { theme } = useSelector(themeSelector)
-  const [loginCredentials, setLoginCredentials] = useState<LoginFormStateProps>(
-    {
-      email: '',
-      password: ''
-    }
-  )
+  const [signUpCredentials, setsignUpCredentials] = useState<SignUpStateProps>({
+    email: '',
+    password: '',
+    confirmPassword: ''
+  })
 
-  const handleSessionLogin = () => {
-    signInWithEmailAndPassword(
+  const handleSessionSignUp = () => {
+    createUserWithEmailAndPassword(
       auth,
-      loginCredentials.email,
-      loginCredentials.password
+      signUpCredentials.email,
+      signUpCredentials.password
     )
       .then((userCredentials) => {
         if (userCredentials) {
-          dispatch(setAuth(true))
-          navigate('/')
+          navigate('/login')
         }
       })
       .catch((error) => setError(error))
+    // dispatch(setAuth(true))
   }
 
   return (
@@ -56,7 +53,7 @@ export const LoginPage = () => {
         <LimitViewport>
           <Container>
             <ContainerText>
-              <Title theme={theme}>Welcome</Title>
+              <Title theme={theme}>Sign Up</Title>
               <Paragraph theme={theme}>
                 Lorem ipsum dolor sit amet, <br /> consectetur adipiscing elit.
               </Paragraph>
@@ -64,12 +61,13 @@ export const LoginPage = () => {
             <FormContainer>
               <ContainerInputs>
                 <Input
+                  autoComplete='email'
                   id='email'
                   label='Email'
                   variant='filled'
                   theme={theme}
                   onChange={(ev) =>
-                    setLoginCredentials((state) => {
+                    setsignUpCredentials((state: SignUpStateProps) => {
                       return {
                         ...state,
                         email: ev.target.value
@@ -78,13 +76,14 @@ export const LoginPage = () => {
                   }
                 />
                 <Input
+                  autoComplete='new-password'
                   id='password'
                   label='Password'
                   type='password'
                   variant='filled'
                   theme={theme}
                   onChange={(ev) =>
-                    setLoginCredentials((state) => {
+                    setsignUpCredentials((state: SignUpStateProps) => {
                       return {
                         ...state,
                         password: ev.target.value
@@ -92,25 +91,47 @@ export const LoginPage = () => {
                     })
                   }
                 />
+                <Input
+                  autoComplete='new-password'
+                  id='confirmPassword'
+                  label='Confirm Password'
+                  type='password'
+                  variant='filled'
+                  theme={theme}
+                  onChange={(ev) =>
+                    setsignUpCredentials((state: SignUpStateProps) => {
+                      return {
+                        ...state,
+                        confirmPassword: ev.target.value
+                      }
+                    })
+                  }
+                />
               </ContainerInputs>
-              <Anchor href='/' theme={theme}>
-                Forgot your password?
+              <Anchor href='/login' theme={theme}>
+                Already have an account? Login
               </Anchor>
-              <Anchor href='/signup' theme={theme}>
-                Don't have an account? Sign Up
-              </Anchor>
+              {signUpCredentials.confirmPassword.length > 0 &&
+                signUpCredentials.password !==
+                  signUpCredentials.confirmPassword && (
+                  <LabelError>Passwords do not match</LabelError>
+                )}
               {error && <LabelError>{error?.message}</LabelError>}
               <Button
+                style={{ width: '150px' }}
                 onClick={(ev) => {
                   ev.preventDefault()
-                  handleSessionLogin()
+                  handleSessionSignUp()
                 }}
                 disabled={
-                  loginCredentials.password.length <= 0 ||
-                  loginCredentials.email.length <= 0
+                  signUpCredentials.password.length <= 0 ||
+                  signUpCredentials.email.length <= 0 ||
+                  signUpCredentials.confirmPassword.length <= 0 ||
+                  signUpCredentials.password !==
+                    signUpCredentials.confirmPassword
                 }
               >
-                Login
+                Sign Up
               </Button>
             </FormContainer>
           </Container>

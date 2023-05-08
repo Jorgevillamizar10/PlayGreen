@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { themeSelector } from '../../../redux/features/themeSlice'
+import { collection, addDoc } from 'firebase/firestore'
 import {
   ContainerButtons,
   DeleteButton,
@@ -12,6 +13,7 @@ import {
   setSportsKey
 } from '../../../redux/features/sessionSlice'
 import { MlFavButtonsProps } from './types'
+import { db } from '../../../firebase'
 
 const DeleteIcon = ({ theme }: { theme: string }) => (
   <SvgComponent
@@ -44,7 +46,7 @@ export const MlFavButtons = ({ name, image, limit }: MlFavButtonsProps) => {
   const { sportsKey } = useSelector(sessionSelector)
   const dispatch = useDispatch()
 
-  const saveNewSports = (type: string) => {
+  const saveNewSports = async (type: string) => {
     dispatch(
       setSaveSports({
         name: name,
@@ -52,6 +54,11 @@ export const MlFavButtons = ({ name, image, limit }: MlFavButtonsProps) => {
         type: type
       })
     )
+    await addDoc(collection(db, 'sports'), {
+      name: name,
+      image: image,
+      type: type
+    })
     if (sportsKey === limit - 1) {
       dispatch(setSportsKey(0))
     } else {

@@ -1,5 +1,5 @@
 
 export interface LoginFormStateProps {
-  username: string
+  email: string
   password: string
 }
