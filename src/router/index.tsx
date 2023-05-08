@@ -13,9 +13,9 @@ export const RouterComponent = () => {
       <Routes>
         {isAuth ? (
           <Route>
-            <Route path='/' element={<HomePage />} />
             <Route path='/history' element={<HistoryPage />} />
             <Route path='*' element={<HomePage />} />
+            <Route path='/' element={<HomePage />} />
           </Route>
         ) : (
           <Route>
