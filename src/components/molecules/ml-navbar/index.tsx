@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { themeSelector } from '../../../redux/features/themeSlice'
+import { setAuth } from '../../../redux/features/sessionSlice'
+import { useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+
 import {
   ViewportNavbarContainer,
   Navbar,
@@ -9,8 +13,6 @@ import {
   NavbarLimitViewport,
   SvgComponent
 } from './styles'
-import { setAuth } from '../../../redux/features/sessionSlice'
-import { useLocation } from 'react-router-dom'
 
 const HomeIcon = ({ theme, active }: { theme: string; active: boolean }) => (
   <SvgComponent
@@ -77,14 +79,14 @@ export const NavbarComponent = () => {
       <NavbarLimitViewport>
         <Navbar theme={theme}>
           <IconContainer theme={theme} active={navbarState.home}>
-            <a href='/' aria-label='home'>
+            <Link to='/' aria-label='home'>
               <HomeIcon theme={theme} active={navbarState.home} />
-            </a>
+            </Link>
           </IconContainer>
           <IconContainer theme={theme} active={navbarState.history}>
-            <a href='/history' aria-label='history'>
+            <Link to='/history' aria-label='history'>
               <HistoryIcon theme={theme} active={navbarState.history} />
-            </a>
+            </Link>
           </IconContainer>
           <IconContainer theme={theme} active={navbarState.logout}>
             <ButtonIcon
