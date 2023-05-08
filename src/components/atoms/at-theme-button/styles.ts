@@ -1,10 +1,11 @@
 import styled from 'styled-components'
 
-export const Button = styled.button`
+export const Button = styled.button<{location: string}>`
   position: absolute;
   width: 62px;
   height: 63px;
-  left: 21px;
+  left: ${props => props.location !== '/history' ? '21px' : 'none'};
+  right: ${props => props.location === '/history' ? '21px' : 'none'};
   top: 22px;
   background: ${props => props.theme === 'dark' ? '#222243':'#FFFFFF'};
   backdrop-filter: blur(10px);

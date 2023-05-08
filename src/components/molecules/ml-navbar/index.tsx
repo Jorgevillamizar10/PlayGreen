@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { themeSelector } from '../../../redux/features/themeSlice'
 import {
@@ -9,6 +10,7 @@ import {
   SvgComponent
 } from './styles'
 import { setAuth } from '../../../redux/features/sessionSlice'
+import { useLocation } from 'react-router-dom'
 
 const HomeIcon = ({ theme, active }: { theme: string; active: boolean }) => (
   <SvgComponent
@@ -48,25 +50,52 @@ const LogoutIcon = ({ theme, active }: { theme: string; active: boolean }) => (
 
 export const NavbarComponent = () => {
   const dispatch = useDispatch()
+  const location = useLocation()
   const { theme } = useSelector(themeSelector)
+  const [navbarState, setNavbarState] = useState({
+    home: false,
+    history: false,
+    logout: false
+  })
+
+  useEffect(() => {
+    if (location.pathname === '/') {
+      setNavbarState((state) => {
+        return { ...state, home: true }
+      })
+    }
+
+    if (location.pathname === '/history') {
+      setNavbarState((state) => {
+        return { ...state, history: true }
+      })
+    }
+  }, [location])
 
   return (
     <ViewportNavbarContainer theme={theme}>
       <NavbarLimitViewport>
         <Navbar theme={theme}>
-          <IconContainer theme={theme} active={true}>
-            <a href='/'>
-              <HomeIcon theme={theme} active={true} />
+          <IconContainer theme={theme} active={navbarState.home}>
+            <a href='/' aria-label='home'>
+              <HomeIcon theme={theme} active={navbarState.home} />
             </a>
           </IconContainer>
-          <IconContainer theme={theme} active={false}>
-            <a href='/history'>
-              <HistoryIcon theme={theme} active={false} />
+          <IconContainer theme={theme} active={navbarState.history}>
+            <a href='/history' aria-label='history'>
+              <HistoryIcon theme={theme} active={navbarState.history} />
             </a>
           </IconContainer>
-          <IconContainer theme={theme} active={false}>
-            <ButtonIcon onClick={() => dispatch(setAuth(false))}>
-              <LogoutIcon theme={theme} active={false} />
+          <IconContainer theme={theme} active={navbarState.logout}>
+            <ButtonIcon
+              onClick={() => {
+                setNavbarState((state) => {
+                  return { ...state, logout: true }
+                })
+                dispatch(setAuth(false))
+              }}
+            >
+              <LogoutIcon theme={theme} active={navbarState.logout} />
             </ButtonIcon>
           </IconContainer>
         </Navbar>

@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux'
 
 export const MlLayout = ({ children }: { children: ReactNode }) => {
   const { isAuth } = useSelector(sessionSelector)
-  console.log(isAuth)
 
   return (
     <section>

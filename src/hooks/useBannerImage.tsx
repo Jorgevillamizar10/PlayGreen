@@ -6,14 +6,16 @@ const ENDPOINT =
 
 export const useBannerImage = () => {
   const [sportsData, setSportsData] = useState<any>()
+  const [loading, setLoading] = useState<boolean>()
 
   useEffect(() => {
     ;(async () => {
+      setLoading(true)
       axios
         .get(ENDPOINT)
         .then(function (response) {
           setSportsData(response?.data)
-          console.log(response)
+          setLoading(false)
         })
         .catch(function (error) {
           console.log(error)
@@ -22,6 +24,7 @@ export const useBannerImage = () => {
   }, [])
 
   return {
-    sportsData: sportsData
+    sportsData: sportsData,
+    loading
   }
 }
