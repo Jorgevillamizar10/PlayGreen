@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { themeSelector } from '../../../redux/features/themeSlice'
 import {
   ContainerButtons,
@@ -6,6 +6,12 @@ import {
   FavButton,
   SvgComponent
 } from './styles'
+import {
+  sessionSelector,
+  setSaveSports,
+  setSportsKey
+} from '../../../redux/features/sessionSlice'
+import { MlFavButtonsProps } from './types'
 
 const DeleteIcon = ({ theme }: { theme: string }) => (
   <SvgComponent
@@ -33,15 +39,41 @@ const HearthIcon = () => (
   </svg>
 )
 
-export const MlFavButtons = () => {
+export const MlFavButtons = ({ name, image, limit }: MlFavButtonsProps) => {
   const { theme } = useSelector(themeSelector)
+  const { sportsKey } = useSelector(sessionSelector)
+  const dispatch = useDispatch()
+
+  const saveNewSports = (type: string) => {
+    dispatch(
+      setSaveSports({
+        name: name,
+        image: image,
+        type: type
+      })
+    )
+    if (sportsKey === limit - 1) {
+      dispatch(setSportsKey(0))
+    } else {
+      dispatch(setSportsKey(sportsKey + 1))
+    }
+  }
 
   return (
     <ContainerButtons>
-      <DeleteButton theme={theme}>
+      <DeleteButton
+        theme={theme}
+        onClick={() => saveNewSports('delete')}
+        id='delete-button'
+        name='delete-button'
+      >
         <DeleteIcon theme={theme} />
       </DeleteButton>
-      <FavButton>
+      <FavButton
+        onClick={() => saveNewSports('like')}
+        id='like-button'
+        name='like-button'
+      >
         <HearthIcon />
       </FavButton>
     </ContainerButtons>

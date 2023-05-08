@@ -1,3 +1,4 @@
+import { useLocation } from 'react-router-dom'
 import { setTheme, themeSelector } from '../../../redux/features/themeSlice'
 import { Button } from './styles'
 import { useSelector, useDispatch } from 'react-redux'
@@ -64,6 +65,7 @@ const DarkIcon = () => {
 
 export const ThemeButton = () => {
   const dispatch = useDispatch()
+  const location = useLocation()
   const { theme } = useSelector(themeSelector)
 
   const setActualTheme = () => {
@@ -78,6 +80,9 @@ export const ThemeButton = () => {
 
   return (
     <Button
+      name='DarkMode'
+      id='dark-mode-button'
+      location={location.pathname}
       theme={theme}
       onClick={(ev) => {
         ev.preventDefault()

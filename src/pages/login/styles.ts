@@ -90,6 +90,10 @@ export const Button = styled.button`
   line-height: 22px;
   color: #FEFEFE;
   cursor: pointer;
+  &:disabled {
+    background: gray;
+    box-shadow: none;
+  }
 `;
 
 export const Input =  styled(TextField)`

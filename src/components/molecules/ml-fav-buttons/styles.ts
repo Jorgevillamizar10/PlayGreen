@@ -12,6 +12,11 @@ export const DeleteButton = styled.button`
   border: none;
   border-radius: 100%;
   cursor: pointer;
+  transition: 1s ease-in-out;
+  &:hover {
+    transition: 1s ease-in-out;
+    background: #4F95DA;
+  }
 `;
 
 export const FavButton = styled.button`
@@ -26,6 +31,11 @@ export const FavButton = styled.button`
   cursor: pointer;
   background: linear-gradient(125.02deg, #236BFE -17.11%, #063BA8 98.58%);
   box-shadow: 0px 10px 25px rgba(35, 107, 254, 0.2);
+  transition: 1s ease-in-out;
+  &:hover {
+    transition: 1s ease-in-out;
+    background: #4F95DA;
+  }
 `;
 
 export const ContainerButtons = styled.div`
